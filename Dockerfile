@@ -86,4 +86,4 @@ WORKDIR /srv
 COPY index.html /srv/index.html
 
 ENTRYPOINT ["/bin/caddy"]
-CMD [ "-conf", "/etc/Caddyfile", "-log", "stdout", "-agree", "${ACME_AGREE}" ]
+CMD [ "-log", "stdout", "-agree", "${ACME_AGREE}" ]
