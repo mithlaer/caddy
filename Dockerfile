@@ -84,4 +84,4 @@ WORKDIR /www
 COPY index.html /www/index.html
 
 ENTRYPOINT ["/bin/caddy"]
-CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "--agree=true"]
+CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "-agree", "--root", "/www"]
