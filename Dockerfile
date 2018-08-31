@@ -1,7 +1,7 @@
 #
 # Build stage by @abiosoft https://github.com/abiosoft/caddy-docker
 #
-FROM golang:1.10-alpine as build
+FROM golang:1.11-alpine as build
 
 ARG version="0.11.0"
 ARG plugins=""
@@ -85,4 +85,4 @@ WORKDIR /srv
 COPY index.html /srv/index.html
 
 ENTRYPOINT ["/bin/caddy"]
-CMD ["--conf", "/etc/Caddyfile", "--log", "stdout"]
+CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "-agree]
