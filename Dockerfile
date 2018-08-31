@@ -79,9 +79,9 @@ COPY Caddyfile /etc/Caddyfile
 # set default caddypath for storing certs
 ENV CADDYPATH=/etc/caddycerts
 
-# serve from /srv
-WORKDIR /srv
-COPY index.html /srv/index.html
+# serve from /www
+WORKDIR /www
+COPY index.html /www/index.html
 
 ENTRYPOINT ["/bin/caddy"]
 CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "--agree=true"]
