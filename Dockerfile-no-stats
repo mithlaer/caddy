@@ -26,9 +26,10 @@ RUN for plugin in $(echo $plugins | tr "," " "); do \
 # builder dependency
 RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserver/builds
 
-# build with telemetry enabled
+# build with telemetry disabled
 RUN cd /go/src/github.com/mholt/caddy/caddy \
     && git checkout -f \
+    && sed -i "s/const enableTelemetry = true/const enableTelemetry = false/" /go/src/github.com/mholt/caddy/caddy/caddymain/run.go \
     && go run build.go \
     && mv caddy /go/bin
 
