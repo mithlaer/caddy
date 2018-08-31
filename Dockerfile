@@ -4,7 +4,7 @@
 FROM golang:1.11-alpine as build
 
 ARG version="0.11.0"
-ARG plugins=""
+ARG plugins="http.prometheus"
 
 RUN apk add --no-cache git
 
@@ -26,9 +26,10 @@ RUN for plugin in $(echo $plugins | tr "," " "); do \
 # builder dependency
 RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserver/builds
 
-# build
+# build with telemetry disabled
 RUN cd /go/src/github.com/mholt/caddy/caddy \
     && git checkout -f \
+    && sed -i "s/const enableTelemetry = true/const enableTelemetry = false/" /go/src/github.com/mholt/caddy/caddy/caddymain/run.go \
     && go run build.go \
     && mv caddy /go/bin
 
@@ -65,7 +66,7 @@ RUN /usr/bin/caddy -version
 FROM scratch
 
 # labels
-LABEL org.label-schema.vcs-url="https://github.com/productionwentdown/caddy"
+LABEL org.label-schema.vcs-url="https://github.com/swarmstack/caddy"
 LABEL org.label-schema.version=${version}
 LABEL org.label-schema.schema-version="1.0"
 
@@ -78,6 +79,7 @@ COPY Caddyfile /etc/Caddyfile
 
 # set default caddypath
 ENV CADDYPATH=/etc/.caddy
+ENV ACME_AGREE="false"
 VOLUME /etc/.caddy
 
 # serve from /srv
@@ -85,4 +87,4 @@ WORKDIR /srv
 COPY index.html /srv/index.html
 
 ENTRYPOINT ["/bin/caddy"]
-CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "-agree]
+CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "--agree=$ACME_AGREE" ]
