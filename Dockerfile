@@ -3,7 +3,7 @@
 #
 FROM golang:1.11-alpine as build
 
-ARG version="0.11.0"
+ARG version="v0.11.0"
 ARG plugins="http.prometheus"
 
 RUN apk add --no-cache git
@@ -87,4 +87,4 @@ WORKDIR /srv
 COPY index.html /srv/index.html
 
 ENTRYPOINT ["/bin/caddy"]
-CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "--agree=$ACME_AGREE" ]
+CMD ["-conf", "/etc/Caddyfile", "-log", "stdout", "-agree=$ACME_AGREE" ]
