@@ -3,15 +3,13 @@
 #
 FROM golang:1.11-alpine as build
 
-ARG version="master"
+ARG version="0.11.0"
 ARG plugins="http.prometheus"
 
 RUN apk add --no-cache git
 
 # caddy
-RUN rm -rf /go/src/github.com/mholt/caddy/* \
-    && rm -rf /go/src/github.com/mholt/caddy/.* \
-    && git clone https://github.com/mholt/caddy -b "${version}" /go/src/github.com/mholt/caddy \
+RUN git clone https://github.com/mholt/caddy -b "${version}" /go/src/github.com/mholt/caddy \
     && cd /go/src/github.com/mholt/caddy \
     && git checkout -b "${version}"
 
