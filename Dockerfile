@@ -79,11 +79,10 @@ COPY Caddyfile /etc/Caddyfile
 
 # set default caddypath
 ENV CADDYPATH=/etc/.caddy
-ENV ACME_AGREE="false"
 
 # serve from /srv
 WORKDIR /srv
 COPY index.html /srv/index.html
 
 ENTRYPOINT ["/bin/caddy"]
-CMD [ "-log", "stdout", "-agree", "${ACME_AGREE}" ]
+CMD [ "-log", "stdout", "-agree", "false" ]
