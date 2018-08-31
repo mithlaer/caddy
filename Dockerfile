@@ -58,7 +58,7 @@ RUN /usr/bin/upx --ultra-brute /usr/bin/caddy
 
 # test
 RUN /usr/bin/caddy -version
-
+RUN /usr/bin/caddy -plugins
 
 #
 # Final image
