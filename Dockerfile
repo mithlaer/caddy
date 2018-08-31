@@ -3,7 +3,7 @@
 #
 FROM golang:1.11-alpine as build
 
-ARG version="0.11.0"
+ARG version="master"
 ARG plugins="http.prometheus"
 
 RUN apk add --no-cache git
