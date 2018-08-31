@@ -9,9 +9,9 @@ ARG plugins="http.prometheus"
 RUN apk add --no-cache git
 
 # caddy
-RUN git clone https://github.com/mholt/caddy -b "v${version}" /go/src/github.com/mholt/caddy \
+RUN git clone https://github.com/mholt/caddy -b "${version}" /go/src/github.com/mholt/caddy \
     && cd /go/src/github.com/mholt/caddy \
-    && git checkout -b "v${version}"
+    && git checkout -b "${version}"
 
 # plugin helper
 #RUN go get -v github.com/abiosoft/caddyplug/caddyplug
