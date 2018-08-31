@@ -14,14 +14,14 @@ RUN git clone https://github.com/mholt/caddy -b "v${version}" /go/src/github.com
     && git checkout -b "v${version}"
 
 # plugin helper
-RUN go get -v github.com/abiosoft/caddyplug/caddyplug
+#RUN go get -v github.com/abiosoft/caddyplug/caddyplug
 
 # plugins
-RUN for plugin in $(echo $plugins | tr "," " "); do \
-    go get -v $(caddyplug package $plugin); \
-    printf "package caddyhttp\nimport _ \"$(caddyplug package $plugin)\"" > \
-        /go/src/github.com/mholt/caddy/caddyhttp/$plugin.go ; \
-    done
+#RUN for plugin in $(echo $plugins | tr "," " "); do \
+#    go get -v $(caddyplug package $plugin); \
+#    printf "package caddyhttp\nimport _ \"$(caddyplug package $plugin)\"" > \
+#        /go/src/github.com/mholt/caddy/caddyhttp/$plugin.go ; \
+#    done
 
 # builder dependency
 RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserver/builds
