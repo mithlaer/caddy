@@ -48,9 +48,9 @@ RUN apt-get update && apt install -y --no-install-recommends \
 
 # get official upx binary
 RUN curl --silent --show-error --fail --location -o - \
-    "https://github.com/upx/upx/releases/download/v3.94/upx-3.94-amd64_linux.tar.xz" \
+    "https://github.com/upx/upx/releases/download/v3.95/upx-3.95-amd64_linux.tar.xz" \
     | tar --no-same-owner -C /usr/bin/ -xJ \
-    --strip-components 1 upx-3.94-amd64_linux/upx
+    --strip-components 1 upx-3.95-amd64_linux/upx
 
 # copy and compress
 COPY --from=build /go/bin/caddy /usr/bin/caddy
