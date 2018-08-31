@@ -77,12 +77,12 @@ COPY --from=compress /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certif
 # copy default caddyfile
 COPY Caddyfile /etc/Caddyfile
 
-# set default caddypath
-ENV CADDYPATH=/etc/.caddy
+# set default caddypath for storing certs
+ENV CADDYPATH=/etc/caddycerts
 
 # serve from /srv
 WORKDIR /srv
 COPY index.html /srv/index.html
 
 ENTRYPOINT ["/bin/caddy"]
-CMD [ "-log", "stdout", "-agree", "false" ]
+CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "--agree=false"]
