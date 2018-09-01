@@ -73,7 +73,7 @@ LABEL org.label-schema.schema-version="1.0"
 # copy caddy binary and ca certs
 COPY --from=compress /usr/bin/caddy /bin/caddy
 COPY --from=compress /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=compress /sbin/tini /sbin/tini
+COPY --from=compress /sbin/tini /bin/tini
 
 # copy default caddyfile
 COPY Caddyfile /etc/Caddyfile
@@ -87,5 +87,5 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-ENTRYPOINT ["/sbin/tini", "--"]
+ENTRYPOINT ["/bin/tini", "--"]
 CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "-agree", "--root", "/www"]
