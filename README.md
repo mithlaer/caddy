@@ -1,5 +1,5 @@
 
-# [caddy](https://hub.docker.com/r/swarmstack/caddy/)
+# [caddy](https://github.com/mholt/caddy/)
 
 A tiny Caddy image compressed with [UPX](https://github.com/upx/upx).
 
