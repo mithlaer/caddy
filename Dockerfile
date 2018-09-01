@@ -6,7 +6,7 @@ FROM golang:1.11-alpine as build
 ARG version="v0.11.0"
 ARG plugins="prometheus"
 
-RUN apk add --no-cache git
+RUN apk add --no-cache --no-progress git tini
 
 # caddy
 RUN git clone https://github.com/mholt/caddy -b "${version}" /go/src/github.com/mholt/caddy \
@@ -43,8 +43,7 @@ RUN apt-get update && apt install -y --no-install-recommends \
     tar \
     xz-utils \
     curl \
-    ca-certificates \
-    tini
+    ca-certificates
 
 # get official upx binary
 RUN curl --silent --show-error --fail --location -o - \
@@ -54,6 +53,7 @@ RUN curl --silent --show-error --fail --location -o - \
 
 # copy and compress
 COPY --from=build /go/bin/caddy /usr/bin/caddy
+COPY --from=build /sbin/tini /sbin/tini
 RUN /usr/bin/upx --ultra-brute /usr/bin/caddy
 
 # test
