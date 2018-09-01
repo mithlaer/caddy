@@ -53,7 +53,6 @@ RUN curl --silent --show-error --fail --location -o - \
 
 # copy and compress
 COPY --from=build /go/bin/caddy /usr/bin/caddy
-COPY --from=build /sbin/tini /sbin/tini
 RUN /usr/bin/upx --ultra-brute /usr/bin/caddy
 
 # test
@@ -73,7 +72,7 @@ LABEL org.label-schema.schema-version="1.0"
 # copy caddy binary and ca certs
 COPY --from=compress /usr/bin/caddy /bin/caddy
 COPY --from=compress /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=compress /sbin/tini /bin/tini
+COPY --from=build /sbin/tini /sbin/tini
 
 # copy default caddyfile
 COPY Caddyfile /etc/Caddyfile
@@ -87,5 +86,5 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-ENTRYPOINT ["/bin/tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "-agree", "--root", "/www"]
