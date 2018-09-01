@@ -43,7 +43,8 @@ RUN apt-get update && apt install -y --no-install-recommends \
     tar \
     xz-utils \
     curl \
-    ca-certificates
+    ca-certificates \
+    tini
 
 # get official upx binary
 RUN curl --silent --show-error --fail --location -o - \
@@ -72,16 +73,19 @@ LABEL org.label-schema.schema-version="1.0"
 # copy caddy binary and ca certs
 COPY --from=compress /usr/bin/caddy /bin/caddy
 COPY --from=compress /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=compress /sbin/tini /sbin/tini
 
 # copy default caddyfile
 COPY Caddyfile /etc/Caddyfile
 
-# set default caddypath for storing certs
+# set default path for certs
+VOLUME ["/etc/caddycerts"]
 ENV CADDYPATH=/etc/caddycerts
 
 # serve from /www
+VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-ENTRYPOINT ["/bin/caddy"]
-CMD ["--conf", "/etc/Caddyfile", "--log", "stdout", "-agree", "--root", "/www"]
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "-agree", "--root", "/www"]
