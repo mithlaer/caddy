@@ -6,7 +6,7 @@ FROM golang:1.11-alpine as build
 ARG version="v0.11.0"
 ARG plugins="prometheus"
 
-RUN apk add --no-cache --no-progress git tini
+RUN apk add --no-cache --no-progress git
 
 # caddy
 RUN git clone https://github.com/mholt/caddy -b "${version}" /go/src/github.com/mholt/caddy \
@@ -72,7 +72,6 @@ LABEL org.label-schema.schema-version="1.0"
 # copy caddy binary and ca certs
 COPY --from=compress /usr/bin/caddy /bin/caddy
 COPY --from=compress /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=build /sbin/tini /sbin/tini
 
 # copy default caddyfile
 COPY Caddyfile /etc/Caddyfile
@@ -86,5 +85,4 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "-agree", "--root", "/www"]
