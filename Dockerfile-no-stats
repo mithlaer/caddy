@@ -64,7 +64,7 @@ RUN /usr/bin/caddy -plugins
 #
 # Final image
 #
-FROM scratch
+FROM alpine:latest
 
 # labels
 LABEL org.label-schema.vcs-url="https://github.com/swarmstack/caddy"
