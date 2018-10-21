@@ -3,6 +3,9 @@
 #
 FROM golang:1.11-alpine as build
 
+ARG BUILD_DATE
+ARG VCS_REF
+
 ARG version="v0.11.0"
 ARG plugins="cache,expires,git,prometheus,realip,reauth"
 
@@ -66,9 +69,12 @@ RUN /usr/bin/caddy -plugins
 FROM alpine:latest
 
 # labels
-LABEL org.label-schema.vcs-url="https://github.com/swarmstack/caddy"
-LABEL org.label-schema.version=${version}
-LABEL org.label-schema.schema-version="1.0"
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.vcs-url="https://github.com/swarmstack/caddy.git" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.schema-version="1.0.0-rc1"
+
+MAINTAINER Mike Holloway <mikeholloway+swarmstack@gmail.com>
 
 # copy caddy binary and ca certs
 COPY --from=compress /usr/bin/caddy /bin/caddy
