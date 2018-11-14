@@ -6,15 +6,15 @@ FROM golang:1.11-alpine as build
 ARG BUILD_DATE
 ARG VCS_REF
 
-ARG version="v0.11.0"
-ARG plugins="cache,expires,git,prometheus,realip,reauth"
+ARG caddy_version="v0.11.0"
+ARG plugins="cache,expires,git,jwt,prometheus,realip,reauth"
 
 RUN apk add --no-cache --no-progress git
 
 # caddy
-RUN git clone https://github.com/mholt/caddy -b "${version}" /go/src/github.com/mholt/caddy \
+RUN git clone https://github.com/mholt/caddy -b "${caddy_version}" /go/src/github.com/mholt/caddy \
     && cd /go/src/github.com/mholt/caddy \
-    && git checkout -b "${version}"
+    && git checkout -b "${caddy_version}"
 
 # plugin helper
 RUN go get -v github.com/abiosoft/caddyplug/caddyplug
