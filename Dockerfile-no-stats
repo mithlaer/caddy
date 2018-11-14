@@ -93,4 +93,4 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-CMD ["/bin/caddy", "-conf", "/etc/Caddyfile", "-log", "stdout", "-agree", "-root", "/www"]
+CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "--agree", "--root", "/www"]
