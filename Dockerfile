@@ -5,6 +5,7 @@ FROM golang:1.11-alpine as build
 
 ARG BUILD_DATE
 ARG VCS_REF
+ARG DEBIAN_FRONTED=noninteractive
 
 ARG caddy_version="v0.11.1"
 ARG plugins="cache,expires,git,jwt,prometheus,realip,reauth"
@@ -90,4 +91,4 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "-agree", "--root", "/www"]
+CMD ["/bin/caddy", "-conf", "/etc/Caddyfile", "-log", "stdout", "-agree", "-root", "/www"]
