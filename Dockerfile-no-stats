@@ -33,10 +33,10 @@ RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserv
 # Caddy v0.11.1: var EnableTelemetry = true
 # build with telemetry disabled
 ARG CACHEBUST=1
-RUN cat /go/src/github.com/mholt/caddy/caddy/caddymain/run.go &&
-    && cd /go/src/github.com/mholt/caddy/caddy \
-    && sed -i'.bak' "s/Telemetry = true/Telemetry = false/" /go/src/github.com/mholt/caddy/caddy/caddymain/run.go \
+RUN cd /go/src/github.com/mholt/caddy/caddy \
     && git checkout -f \
+    && sed -i'.bak' "s/Telemetry = true/Telemetry = false/" /go/src/github.com/mholt/caddy/caddy/caddymain/run.go \
+    && grep -i 'enabletelemetry = ' /go/src/github.com/mholt/caddy/caddy/caddymain/run.go \
     && go run build.go \
     && mv caddy /go/bin \
     && ls /go/src/github.com/mholt/caddy/caddy/caddymain/
