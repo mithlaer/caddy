@@ -37,6 +37,7 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
     && grep -i 'enabletelemetry = ' /go/src/github.com/mholt/caddy/caddy/caddymain/run.go 
 
 RUN sed -i'.bak' "s/Telemetry = true/Telemetry = false/" /go/src/github.com/mholt/caddy/caddy/caddymain/run.go \
+    && cd /go/src/github.com/mholt/caddy/caddy \
     && grep -i 'enabletelemetry = ' /go/src/github.com/mholt/caddy/caddy/caddymain/run.go \
     && go run build.go \
     && mv caddy /go/bin
