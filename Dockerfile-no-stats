@@ -1,7 +1,7 @@
 #
 # Build stage by @abiosoft https://github.com/abiosoft/caddy-docker
 #
-FROM golang:1.11-alpine as build
+FROM golang:1.11-alpine as builder
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -59,7 +59,7 @@ RUN curl --silent --show-error --fail --location -o - \
     --strip-components 1 upx-3.95-amd64_linux/upx
 
 # copy and compress
-COPY --from=build /go/bin/caddy /usr/bin/caddy
+COPY --from=builder /go/bin/caddy /usr/bin/caddy
 RUN /usr/bin/upx --ultra-brute /usr/bin/caddy
 
 # test
