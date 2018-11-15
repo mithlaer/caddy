@@ -30,6 +30,7 @@ RUN for plugin in $(echo $plugins | tr "," " "); do \
 # builder dependency
 RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserver/builds
 
+# Caddy v0.11.1: var EnableTelemetry = true
 # build with telemetry disabled
 RUN cd /go/src/github.com/mholt/caddy/caddy \
     && git checkout -f \
@@ -37,6 +38,8 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
     && go run build.go \
     && mv caddy /go/bin
 
+# test
+RUN /usr/bin/tail /go/src/github.com/mholt/caddy/caddy/caddymain/run.go
 
 #
 # Compress Caddy with upx
