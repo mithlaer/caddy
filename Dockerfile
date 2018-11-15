@@ -7,7 +7,7 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG DEBIAN_FRONTED=noninteractive
 
-ARG caddy_version="v0.11.0"
+ARG caddy_version="v0.11.1"
 ARG plugins="cache,expires,git,jwt,prometheus,realip,reauth"
 
 RUN apk add --no-cache --no-progress git
