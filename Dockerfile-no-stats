@@ -36,10 +36,8 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
     && git checkout -f \
     && sed -i'.bak' "s/Telemetry = true/Telemetry = false/" /go/src/github.com/mholt/caddy/caddy/caddymain/run.go \
     && go run build.go \
-    && mv caddy /go/bin
-
-# test
-RUN /usr/bin/tail /go/src/github.com/mholt/caddy/caddy/caddymain/run.go
+    && mv caddy /go/bin \
+    && tail /go/src/github.com/mholt/caddy/caddy/caddymain/run.go
 
 #
 # Compress Caddy with upx
