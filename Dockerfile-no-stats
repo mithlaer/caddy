@@ -96,4 +96,5 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
+HEALTHCHECK --interval=25s --timeout=2s --start-period=15s CMD curl --fail http://localhost:9180/metrics || exit 1
 CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "--agree", "--root", "/www"]
