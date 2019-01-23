@@ -6,7 +6,7 @@ FROM golang:1.11-alpine as build
 ARG BUILD_DATE
 ARG VCS_REF
 
-ARG caddy_version="v0.11.1"
+ARG caddy_version="v0.11.2"
 ARG plugins="cache,expires,git,jwt,prometheus,realip,reauth"
 ARG DEBIAN_FRONTED=noninteractive
 
