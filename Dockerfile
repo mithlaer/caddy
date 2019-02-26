@@ -7,7 +7,7 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG DEBIAN_FRONTED=noninteractive
 
-ARG caddy_version="v0.11.2"
+ARG caddy_version="v0.11.4"
 ARG plugins="cache,expires,git,jwt,prometheus,realip,reauth"
 
 RUN apk add --no-cache --no-progress git
@@ -92,5 +92,4 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-HEALTHCHECK --interval=25s --timeout=2s --start-period=15s CMD /bin/curl --fail http://localhost:9180/metrics || exit 1
 CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "-agree", "--root", "/www"]

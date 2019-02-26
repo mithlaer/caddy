@@ -6,7 +6,7 @@ FROM golang:1.11-alpine as build
 ARG BUILD_DATE
 ARG VCS_REF
 
-ARG caddy_version="v0.11.2"
+ARG caddy_version="v0.11.4"
 ARG plugins="cache,expires,git,jwt,prometheus,realip,reauth"
 ARG DEBIAN_FRONTED=noninteractive
 
@@ -83,7 +83,6 @@ MAINTAINER Mike Holloway <mikeholloway+swarmstack@gmail.com>
 # copy caddy binary and ca certs
 COPY --from=compress /usr/bin/caddy /bin/caddy
 COPY --from=compress /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=compress /usr/bin/curl /bin/curl
 
 # copy default caddyfile
 COPY Caddyfile /etc/Caddyfile
@@ -97,5 +96,4 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-HEALTHCHECK --interval=25s --timeout=2s --start-period=15s CMD /bin/curl --fail http://localhost:9180/metrics || exit 1
 CMD ["/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "--agree", "--root", "/www"]
