@@ -1,13 +1,13 @@
 #
 # Build stage by @abiosoft https://github.com/abiosoft/caddy-docker
 #
-FROM golang:1.11-alpine as build
+FROM golang:1.12-alpine as build
 
 ARG BUILD_DATE
 ARG VCS_REF
 ARG DEBIAN_FRONTED=noninteractive
 
-ARG caddy_version="v0.11.4"
+ARG caddy_version="v0.11.5"
 ARG plugins="cache,expires,git,jwt,prometheus,realip,reauth"
 
 RUN apk add --no-cache --no-progress git
