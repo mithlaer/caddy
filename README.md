@@ -1,7 +1,7 @@
 
 # [caddy](https://github.com/mholt/caddy/)
 
-A tiny Caddy image compressed with [UPX](https://github.com/upx/upx).
+A Caddy image with and without "Telemetry" (stats reporting) enabled
 
 # Usage
 
