@@ -10,7 +10,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG caddy_version="v1.0.0"
 ARG plugins="cache,expires,git,jwt,prometheus,realip,reauth"
 
-RUN apk add --no-cache --no-progress git
+RUN apk add --no-cache --no-progress git ca-certificates
 
 # caddy
 RUN git clone https://github.com/mholt/caddy -b "${caddy_version}" /go/src/github.com/mholt/caddy \
@@ -38,6 +38,8 @@ RUN git clone https://github.com/cheekybits/genny /go/src/github.com/cheekybits/
 RUN git clone https://github.com/marten-seemann/qpack /go/src/github.com/marten-seemann/qpack
 RUN git clone https://github.com/marten-seemann/qtls /go/src/github.com/marten-seemann/qtls
 
+
+
 # build with telemetry enabled
 RUN cd /go/src/github.com/mholt/caddy/caddy \
     && sed -i 's/h2quic/http3/g' /go/src/github.com/mholt/caddy/caddyhttp/proxy/upstream_test.go \
@@ -45,39 +47,16 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
     && sed -i 's/h2quic/http3/g' /go/src/github.com/mholt/caddy/caddyhttp/proxy/proxy_test.go \
     && sed -i 's/h2quic/http3/g' /go/src/github.com/mholt/caddy/caddyhttp/proxy/reverseproxy.go \
     && sed -i 's/h2quic/http3/g' /go/src/github.com/mholt/caddy/caddyhttp/httpserver/server.go \
-    && go install
-    #&& mv caddy /go/bin
+    && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/caddy
 
 # test
 RUN /go/bin/caddy -version
 RUN /go/bin/caddy -plugins
 
 #
-# Compress Caddy with UPX
-#
-FROM debian:stable as compress
-
-# curl, tar
-RUN apt-get update && apt install -y --no-install-recommends \
-    tar \
-    xz-utils \
-    curl \
-    ca-certificates
-
-# get official upx binary
-RUN curl --silent --show-error --fail --location -o - \
-    "https://github.com/upx/upx/releases/download/v3.95/upx-3.95-amd64_linux.tar.xz" \
-    | tar --no-same-owner -C /usr/bin/ -xJ \
-    --strip-components 1 upx-3.95-amd64_linux/upx
-
-# copy and compress
-COPY --from=build /go/bin/caddy /usr/bin/caddy
-RUN /usr/bin/upx --ultra-brute /usr/bin/caddy
-
-#
 # Final image
 #
-FROM alpine:3.9.3
+FROM scratch
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-url="https://github.com/swarmstack/caddy.git" \
@@ -87,8 +66,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 MAINTAINER Mike Holloway <mikeholloway+swarmstack@gmail.com>
 
 # copy caddy binary and ca certs
-COPY --from=compress /usr/bin/caddy /bin/caddy
-COPY --from=compress /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=build /go/bin/caddy /bin/caddy
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 # copy default caddyfile
 COPY Caddyfile /etc/Caddyfile
