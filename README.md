@@ -1,7 +1,7 @@
 
 # [caddy](https://github.com/mholt/caddy/)
 
-A Caddy image with and without "Telemetry" (stats reporting) enabled
+A Caddy image with and without telemetry enabled
 
 # Usage
 

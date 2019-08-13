@@ -49,6 +49,9 @@ RUN git clone https://github.com/lucas-clemente/aes12 /go/src/github.com/lucas-c
 RUN git clone https://github.com/lucas-clemente/quic-go-certificates /go/src/github.com/lucas-clemente/quic-go-certificates
 RUN rm -rf /go/src/github.com/lucas-clemente/quic-go && git clone --single-branch --branch v0.11.2 https://github.com/lucas-clemente/quic-go /go/src/github.com/lucas-clemente/quic-go
 
+# Deal with https://github.com/miekg/caddy-prometheus/issues/43
+COPY patches/handler.go /go/src/github.com/miekg/caddy-prometheus/handler.go
+
 # build with telemetry enabled
 RUN cd /go/src/github.com/caddyserver/caddy/caddy \
     && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/caddy

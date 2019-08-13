@@ -52,30 +52,15 @@ RUN rm -rf /go/src/github.com/lucas-clemente/quic-go && git clone --single-branc
 # Deal with https://github.com/miekg/caddy-prometheus/issues/43
 COPY patches/handler.go /go/src/github.com/miekg/caddy-prometheus/handler.go
 
-# build with telemetry disabled
+# build with telemetry enabled
 RUN cd /go/src/github.com/caddyserver/caddy/caddy \
-    && sed -i 's/Telemetry = true/Telemetry = false/' /go/src/github.com/caddyserver/caddy/caddy/caddymain/run.go \
     && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/caddy
 
 # test
 RUN /go/bin/caddy -version
 RUN /go/bin/caddy -plugins
-
-#
-# Final image
-#
-FROM scratch
-
-LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.vcs-url="https://github.com/swarmstack/caddy.git" \
-      org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.schema-version="1.0.0-rc1"
-
-MAINTAINER Mike Holloway <mikeholloway+swarmstack@gmail.com>
-
 # copy caddy binary and ca certs
-COPY --from=build /go/bin/caddy /bin/caddy
-COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+RUN cp /go/bin/caddy /bin/caddy
 
 # copy default caddyfile
 COPY Caddyfile /etc/Caddyfile
@@ -89,4 +74,4 @@ VOLUME ["/www"]
 WORKDIR /www
 COPY index.html /www/index.html
 
-CMD ["/bin/caddy", "-conf", "/etc/Caddyfile", "-log", "stdout", "-agree", "-root", "/www"]
+CMD ["/bin/bash"]
