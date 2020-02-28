@@ -1,7 +1,7 @@
 #
 # Build stage by @abiosoft https://github.com/abiosoft/caddy-docker
 #
-FROM golang:1.13-alpine as build
+FROM golang:1.14-alpine as build
 
 ARG BUILD_DATE
 ARG VCS_REF
