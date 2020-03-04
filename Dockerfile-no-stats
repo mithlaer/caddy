@@ -36,7 +36,7 @@ COPY patches/handler.go /go/src/github.com/miekg/caddy-prometheus/handler.go
 
 # build with telemetry disabled
 RUN cd /go/src/github.com/caddyserver/caddy/caddy \
-    && sed -i 's/Telemetry = true/Telemetry = false/' /go/src/github.com/caddyserver/caddy/caddy/caddymain/run.go \
+    && sed -i.bak 's/Telemetry = true/Telemetry = false/' /go/src/github.com/caddyserver/caddy/caddy/caddymain/run.go \
     && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/caddy
 
 # test
