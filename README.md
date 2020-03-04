@@ -3,6 +3,8 @@
 
 A Caddy image with and without telemetry (no-stats)
 
+[https://hub.docker.com/r/swarmstack/caddy/](https://hub.docker.com/r/swarmstack/caddy/)
+
 # Usage
 
 Serve files in `$PWD`:
