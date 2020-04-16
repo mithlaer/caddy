@@ -22,7 +22,6 @@ RUN git clone https://github.com/caddyserver/caddy -b "${caddy_version}" /go/src
 
 # plugin helper
 RUN go get -v github.com/abiosoft/caddyplug/caddyplug
-RUN sed -i 's/mholt\/caddy"/caddyserver\/caddy"/g' /go/bin/caddyplug
 
 # plugins
 RUN for plugin in $(echo $plugins | tr "," " "); do \
